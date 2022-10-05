@@ -6,6 +6,64 @@
 
 int qtd = 0;
 
+float** ler_matriz_distancias(int n_cidades)
+{
+    float** matriz = (float**)malloc(n_cidades * sizeof(float*));
+
+    if(matriz == NULL) return NULL;
+
+    for(int i = 0; i < n_cidades; ++i)
+    {
+        matriz[i] = (float*)malloc(n_cidades * sizeof(float));
+
+        if(matriz[i] == NULL)
+        {
+            for(int j = 0; j < i; ++j)
+            {
+                free(matriz[i]);
+            }
+
+            free(matriz);
+
+            return NULL;
+        }
+    }
+
+    int a, b;
+    float distancia;
+
+    for(int i = 0; i < n_cidades; i++)
+    {
+        for(int j = 0; j < n_cidades; j++)
+        {
+            matriz[i][j] = -1;
+        }
+    }
+
+   //Preenchendo a matriz
+   while(scanf("%i %i %f", &a, &b, &distancia) != EOF)
+   {
+        matriz[a-1][b-1] = distancia;
+        matriz[b-1][a-1] = distancia;
+   }
+
+    return matriz;
+}
+
+void matriz_apagar(float*** matriz_distancias, int n_cidades)
+{
+    if(matriz_distancias == NULL || *matriz_distancias == NULL) return;
+
+    for(int i = 0; i < n_cidades; ++i)
+    {
+        free(*matriz_distancias[i]);
+    }
+
+    free(*matriz_distancias);
+
+    *matriz_distancias = NULL;
+}
+
 void troca(ITEM **a, int i, int j){
   ITEM* temp = a[i];
   a[i] = a[j];

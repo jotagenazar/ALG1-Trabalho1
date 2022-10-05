@@ -9,14 +9,19 @@ struct item_{
     ITEM* anterior;
 };
 
-ITEM *item_criar(int cidade, int n_cidades){
+ITEM *item_criar(int cidade, int n_cidades)
+{
     ITEM* p = (ITEM*)malloc(sizeof(ITEM));
+
     p->cidade = cidade;
     p->anterior = NULL;
-    p->distancias = (float*)malloc(n_cidades*sizeof(float));
-    if(p->distancias==NULL){
+    p->distancias = (float*)malloc(n_cidades * sizeof(float));
+
+    if(p->distancias == NULL)
+    {
         return NULL;
     }
+
     return p;
 }
 
@@ -36,8 +41,10 @@ void item_imprimir(ITEM *item){
     printf("O item nao existe.\n");
 }
 
-int item_get_chave(ITEM *item){
-    if(item!=NULL){
+int item_get_chave(ITEM *item)
+{
+    if(item!=NULL)
+    {
         return item->cidade;
     }
 }
@@ -74,29 +81,37 @@ float item_get_distancia(ITEM* item){
     return (item->anterior)->distancias[item->cidade - 1];
 }
 
-void vetor_preencher(int n_cidades, ITEM** vetor, float matriz[][n_cidades]){
-    for(int i = 0; i < n_cidades - 1; i++){
-      for(int j = 0; j < n_cidades; j++){
-         item_set_distancia(vetor[i], j, matriz[i][j]);
-      }
+void vetor_preencher(int n_cidades, ITEM** vetor, float** matriz_distancias)
+{
+    for(int i = 0; i < n_cidades - 1; i++)
+    {
+        for(int j = 0; j < n_cidades; j++)
+        {
+            item_set_distancia(vetor[i], j, matriz_distancias[vetor[i]->cidade][j]);
+        }
     }
 }
 
-ITEM** vetor_criar(int n_cidade, int index_origem, float matriz[][n_cidade]){
-    ITEM** vetor = (ITEM**)malloc((n_cidade - 1)*sizeof(ITEM*));
-    if(vetor == NULL){
+ITEM** vetor_criar(int n_cidades, int index_origem, float** matriz_distancias)
+{
+    ITEM** vetor = (ITEM**)malloc((n_cidades - 1)*sizeof(ITEM*));
+    if(vetor == NULL)
+    {
         return NULL;
     }
 
-    for(int i = 0; i < n_cidade; i++){
-        if(i == index_origem){
-            continue;
+    int j = 0;
+    for(int i = 0; i < n_cidades; ++i)
+    {
+        if(i != index_origem)
+        {
+            vetor[j] = item_criar(i, n_cidades);
+            j++;
         }
-        vetor[i] = item_criar(i, n_cidade);
     }
 
-    vetor_preencher(n_cidade, vetor, matriz);
-
+    vetor_preencher(n_cidades, vetor, matriz_distancias);
+    
     return vetor;
 }
 
@@ -111,23 +126,30 @@ bool vetor_apagar(ITEM** vetor, int n_cidades){
     return true;
 }
 
-bool item_set_distancia(ITEM* item, int cidade, float dist){
-    if(item == NULL){
+bool item_set_distancia(ITEM* item, int cidade, float dist)
+{
+    if(item == NULL)
+    {
         return false;
     }
 
     item->distancias[cidade] = dist;
+
     return true;
 }
 
-void print_vetor_itens(ITEM** vetor, int n_cidades){
-    if(vetor != NULL){
-        for(int i = 0; i < n_cidades; i++){
-            printf("Cidade %i: ", item_get_chave(vetor[i]));
-            for(int j = 0; j < n_cidades; j++){
-                printf("%.2f ", vetor[i]->distancias[j]);
-            }
-            printf("\n");
+void print_vetor_itens(ITEM** vetor, int n_cidades)
+{
+    if(vetor == NULL) return;
+
+    for(int i = 0; i < n_cidades - 1; i++)
+    {
+        printf("Cidade %i: ", item_get_chave(vetor[i]));
+
+        for(int j = 0; j < n_cidades; j++)
+        {
+            printf("%.2f ", vetor[i]->distancias[j]);
         }
+        printf("\n");
     }
 }
