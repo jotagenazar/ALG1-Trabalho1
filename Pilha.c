@@ -116,3 +116,19 @@ void pilha_print(PILHA *pilha){
         printf("DISTANCIA: %.2f \n", pilha->dist_total);
     }
 }
+
+float pilha_get_distancia(PILHA* pilha)
+{
+    if(pilha != NULL)
+    {
+        return pilha->dist_total;
+    }
+}
+
+void pilha_set_distancia(PILHA* pilha, float distancia)
+{
+    if(pilha != NULL)
+    {
+        pilha->dist_total = distancia;
+    }
+}

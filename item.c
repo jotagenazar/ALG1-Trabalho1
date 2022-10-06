@@ -94,14 +94,14 @@ void vetor_preencher(int n_cidades, ITEM** vetor, float** matriz_distancias)
 
 ITEM** vetor_criar(int n_cidades, int index_origem, float** matriz_distancias)
 {
-    ITEM** vetor = (ITEM**)malloc((n_cidades - 1)*sizeof(ITEM*));
+    ITEM** vetor = (ITEM**)malloc((n_cidades)*sizeof(ITEM*));
     if(vetor == NULL)
     {
         return NULL;
     }
 
     int j = 0;
-    for(int i = 0; i < n_cidades; ++i)
+    for(int i = 0; i < n_cidades + 1; ++i)
     {
         if(i != index_origem)
         {
@@ -142,7 +142,7 @@ void print_vetor_itens(ITEM** vetor, int n_cidades)
 {
     if(vetor == NULL) return;
 
-    for(int i = 0; i < n_cidades - 1; i++)
+    for(int i = 0; i < n_cidades; i++)
     {
         printf("Cidade %i: ", item_get_chave(vetor[i]));
 

@@ -77,28 +77,42 @@ void print_vetor(int *vetor, int n){
     printf("\n");
 }
 
-void heap_permutacao(PILHA* pilha,ITEM** vetor, int parte, int tam, ITEM* inicio){
-    if (parte == 1) {
-        qtd++;
-        pilha_empilhar(pilha, inicio);
+void heap_permutacao(PILHA* melhorPilha, ITEM** vetor, int parte, int tam, ITEM* inicio){
+    if (parte == 1)
+    {
+        PILHA* pilhaAtual = pilha_criar();
+        print_vetor_itens(vetor, tam);
+        
+        pilha_empilhar(pilhaAtual, inicio);
 
-        for(int i = 0; i < tam; i++){
-            if(item_get_chave(vetor[i])!= item_get_chave(inicio)){
-                pilha_empilhar(pilha, vetor[i]);
+        for(int i = 0; i < tam; i++)
+        {
+            if(!pilha_empilhar(pilhaAtual, vetor[i])) 
+            {
+                pilha_apagar(&pilhaAtual);
+                return;
             }
         }
-        pilha_empilhar(pilha, inicio);
 
-        pilha_print(pilha);
-        printf("Desempilhando:\n");
-        while(pilha_vazia(pilha) == false){
-            pilha_desempilhar(pilha);
+        if(!pilha_empilhar(pilhaAtual, inicio)) 
+        {
+            pilha_apagar(&pilhaAtual);
+            return;
         }
+        //pilha_print(pilhaAtual);
+
+        if(pilha_get_distancia(pilhaAtual) < pilha_get_distancia(melhorPilha));
+        {
+            pilha_apagar(&melhorPilha);
+
+            melhorPilha = pilhaAtual;
+        }
+
         return;
     }
  
     for (int i = 0; i < parte; i++) {
-        heap_permutacao(pilha, vetor, parte - 1, tam, inicio);
+        heap_permutacao(melhorPilha, vetor, parte - 1, tam, inicio);
 
         if (parte % 2 == 1){
             troca(vetor, 0, parte - 1);
@@ -109,6 +123,15 @@ void heap_permutacao(PILHA* pilha,ITEM** vetor, int parte, int tam, ITEM* inicio
     }
 }
 
+PILHA* calcular_melhor_trajeto(ITEM** vetor, int tam, ITEM* inicio)
+{
+    PILHA* melhorPilha = pilha_criar();
+    pilha_set_distancia(melhorPilha, 0);
+
+    heap_permutacao(melhorPilha, vetor, tam, tam, inicio);
+
+    return melhorPilha;
+}
 // void pcv(ITEM** vetor, int n_cidades, int origem){
 //     PILHA* pilha = pilha_criar();
 //     int tam = n_cidades - 1;

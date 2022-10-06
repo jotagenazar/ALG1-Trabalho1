@@ -16,6 +16,8 @@
   ITEM *pilha_topo(PILHA *pilha);
   bool pilha_empilhar(PILHA *pilha, ITEM *item);
   ITEM *pilha_desempilhar(PILHA *pilha);
+  float pilha_get_distancia(PILHA* pilha);
+  void pilha_set_distancia(PILHA* pilha, float distancia);
   void pilha_print(PILHA *pilha);
 
 #endif 
