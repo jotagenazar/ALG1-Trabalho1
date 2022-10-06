@@ -18,16 +18,17 @@ PILHA *pilha_criar(void){
     return p;
 }
 
-void pilha_apagar(PILHA **pilha){
-    if(pilha != NULL && *pilha != NULL){
-        if(pilha_vazia(*pilha) == false){
-            ITEM* aux = (*pilha)->topo;
-            while(aux != NULL){
-                free(aux);
-                aux = item_get_anterior(aux);
-            }
-        }
-        free(*pilha);
+void pilha_apagar(PILHA **pilha)
+{
+    if(*pilha != NULL) return;
+
+    ITEM* aux = (*pilha)->topo; 
+    ITEM* ant = NULL;
+    while(!pilha_vazia(*pilha))
+    {
+        ant = aux;
+        aux = item_get_anterior(aux);
+        free(ant);
     }
 }
 
@@ -61,18 +62,21 @@ ITEM *pilha_topo(PILHA *pilha){
     return pilha->topo;
 }
 
-bool pilha_empilhar(PILHA *pilha, ITEM *item){
+bool pilha_empilhar(PILHA *pilha, ITEM *item)
+{
     if(pilha == NULL || item == NULL){
         return false;
     }
    
     pilha->tamanho++;
    
-    if(pilha->topo==NULL){//Primeiro item
+    if(pilha->topo==NULL)
+    {//Primeiro item
         pilha->topo = item;
         item_set_anterior(item, NULL);
     }
-    else{
+    else
+    {
         item_set_anterior(item, pilha->topo);
         if(item_get_distancia(item) == -1){
             return false;

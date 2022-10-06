@@ -15,19 +15,18 @@ int main(){
 
    int tamanhoVetor = n_cidades - 1;
    ITEM** vetor = vetor_criar(n_cidades, indexOrigem, matriz_distancias);
+
    
    ITEM* cidadeOrigem = item_criar(origem, n_cidades);
 
    PILHA* melhorTrajeto = calcular_melhor_trajeto(vetor, tamanhoVetor, cidadeOrigem);
-   
-   float melhorDistancia = pilha_get_distancia(melhorTrajeto);
 
-   printf("DISTANCIA: %.2f\n", melhorDistancia);
+   float melhorDistancia = pilha_get_distancia(melhorTrajeto);
 
    matriz_apagar(&matriz_distancias, n_cidades);
    item_apagar(&cidadeOrigem);
    pilha_apagar(&melhorTrajeto);
-   vetor_apagar(vetor, n_cidades);
+   vetor_apagar(vetor, tamanhoVetor);
 
    return EXIT_SUCCESS;
 }

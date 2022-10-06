@@ -25,12 +25,16 @@ ITEM *item_criar(int cidade, int n_cidades)
     return p;
 }
 
-bool item_apagar(ITEM **item){
+bool item_apagar(ITEM **item)
+{
     if(item==NULL || *item==NULL){
         return false;
     }
     free((*item)->distancias);
     free(*item);
+
+    *item = NULL;
+    
     return true;
 }
 
@@ -87,25 +91,25 @@ void vetor_preencher(int n_cidades, ITEM** vetor, float** matriz_distancias)
     {
         for(int j = 0; j < n_cidades; j++)
         {
-            item_set_distancia(vetor[i], j, matriz_distancias[vetor[i]->cidade][j]);
+            item_set_distancia(vetor[i], j, matriz_distancias[vetor[i]->cidade - 1][j]);
         }
     }
 }
 
 ITEM** vetor_criar(int n_cidades, int index_origem, float** matriz_distancias)
 {
-    ITEM** vetor = (ITEM**)malloc((n_cidades)*sizeof(ITEM*));
+    ITEM** vetor = (ITEM**)malloc((n_cidades - 1)*sizeof(ITEM*));
     if(vetor == NULL)
     {
         return NULL;
     }
 
     int j = 0;
-    for(int i = 0; i < n_cidades + 1; ++i)
+    for(int i = 0; i < n_cidades; ++i)
     {
         if(i != index_origem)
         {
-            vetor[j] = item_criar(i, n_cidades);
+            vetor[j] = item_criar(i + 1, n_cidades);
             j++;
         }
     }
@@ -115,7 +119,8 @@ ITEM** vetor_criar(int n_cidades, int index_origem, float** matriz_distancias)
     return vetor;
 }
 
-bool vetor_apagar(ITEM** vetor, int n_cidades){
+bool vetor_apagar(ITEM** vetor, int n_cidades)
+{
     if(vetor == NULL){
         return false;
     }
@@ -146,7 +151,7 @@ void print_vetor_itens(ITEM** vetor, int n_cidades)
     {
         printf("Cidade %i: ", item_get_chave(vetor[i]));
 
-        for(int j = 0; j < n_cidades; j++)
+        for(int j = 0; j < n_cidades + 1; j++)
         {
             printf("%.2f ", vetor[i]->distancias[j]);
         }

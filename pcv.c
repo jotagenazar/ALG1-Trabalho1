@@ -56,7 +56,7 @@ void matriz_apagar(float*** matriz_distancias, int n_cidades)
 
     for(int i = 0; i < n_cidades; ++i)
     {
-        free(*matriz_distancias[i]);
+        free((*matriz_distancias)[i]);
     }
 
     free(*matriz_distancias);
@@ -64,25 +64,45 @@ void matriz_apagar(float*** matriz_distancias, int n_cidades)
     *matriz_distancias = NULL;
 }
 
-void troca(ITEM **a, int i, int j){
+void troca(ITEM **a, int i, int j)
+{
   ITEM* temp = a[i];
   a[i] = a[j];
   a[j] = temp;
 }
 
-void print_vetor(int *vetor, int n){
-    for(int i = 0; i < n; i++){
-        printf("%i ", vetor[i]);
+void trocarPilhas(PILHA* pilhaMelhor, PILHA* pilhaAtual)
+{
+    while(!pilha_vazia(pilhaMelhor))
+    {
+        pilha_desempilhar(pilhaMelhor);
     }
-    printf("\n");
+
+    while(!pilha_vazia(pilhaAtual))
+    {
+        ITEM* aux = pilha_desempilhar(pilhaAtual);
+
+        pilha_empilhar(pilhaMelhor, aux);
+    }
 }
 
-void heap_permutacao(PILHA* melhorPilha, ITEM** vetor, int parte, int tam, ITEM* inicio){
+void heap_permutacao(PILHA** melhorPilha, ITEM** vetor, int parte, int tam, ITEM* inicio)
+{
+    for (int i = 0; i < parte; i++) {
+        heap_permutacao(melhorPilha, vetor, parte - 1, tam, inicio);
+
+        if (parte % 2 == 1){
+            troca(vetor, 0, parte - 1);
+        }
+        else{
+            troca(vetor, i, parte-1);
+        }
+    }
+
     if (parte == 1)
     {
         PILHA* pilhaAtual = pilha_criar();
-        print_vetor_itens(vetor, tam);
-        
+
         pilha_empilhar(pilhaAtual, inicio);
 
         for(int i = 0; i < tam; i++)
@@ -99,52 +119,35 @@ void heap_permutacao(PILHA* melhorPilha, ITEM** vetor, int parte, int tam, ITEM*
             pilha_apagar(&pilhaAtual);
             return;
         }
-        //pilha_print(pilhaAtual);
 
-        if(pilha_get_distancia(pilhaAtual) < pilha_get_distancia(melhorPilha));
+        printf("DISTANCIA PILHA ATUAL: %.2f\n", pilha_get_distancia(pilhaAtual));
+        printf("Trajeto Atual: ");
+        pilha_print(pilhaAtual);
+
+        printf("DISTANCIA PILHA MELHOR: %.2f\n\n\n", pilha_get_distancia(*melhorPilha));
+
+        if(pilha_get_distancia(pilhaAtual) < pilha_get_distancia(*melhorPilha))
         {
-            pilha_apagar(&melhorPilha);
+            pilha_apagar(melhorPilha);
 
-            melhorPilha = pilhaAtual;
+            *melhorPilha = pilhaAtual;
+
+            pilha_apagar(&pilhaAtual);
         }
+
 
         return;
-    }
- 
-    for (int i = 0; i < parte; i++) {
-        heap_permutacao(melhorPilha, vetor, parte - 1, tam, inicio);
-
-        if (parte % 2 == 1){
-            troca(vetor, 0, parte - 1);
-        }
-        else{
-            troca(vetor, i, parte-1);
-        }
     }
 }
 
 PILHA* calcular_melhor_trajeto(ITEM** vetor, int tam, ITEM* inicio)
 {
     PILHA* melhorPilha = pilha_criar();
-    pilha_set_distancia(melhorPilha, 0);
+    pilha_set_distancia(melhorPilha, RAND_MAX);
 
-    heap_permutacao(melhorPilha, vetor, tam, tam, inicio);
+    heap_permutacao(&melhorPilha, vetor, tam, tam, inicio);
 
+    printf("MELHOR PILHA: ");
+    pilha_print(melhorPilha);
     return melhorPilha;
-}
-// void pcv(ITEM** vetor, int n_cidades, int origem){
-//     PILHA* pilha = pilha_criar();
-//     int tam = n_cidades - 1;
-
-
-//     //Empilhando a cidade de origem:
-//     pilha_empilhar(pilha, vetor[origem-1]);
-
-    
-
-//     pilha_apagar(pilha);
-// }
-
-void print_qtd(){
-    printf("TOTAL %i \n", qtd);
 }
