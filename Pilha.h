@@ -19,5 +19,7 @@
   float pilha_get_distancia(PILHA* pilha);
   void pilha_set_distancia(PILHA* pilha, float distancia);
   void pilha_print(PILHA *pilha);
+  void pilha_set_topo(PILHA* pilha, ITEM* novo_topo);
+  int pilha_get_tamanho(PILHA* pilha);
 
 #endif 

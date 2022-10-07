@@ -30,6 +30,9 @@ void pilha_apagar(PILHA **pilha)
         aux = item_get_anterior(aux);
         free(ant);
     }
+
+    *pilha = NULL;
+
 }
 
 bool pilha_vazia(PILHA *pilha){
@@ -72,16 +75,17 @@ bool pilha_empilhar(PILHA *pilha, ITEM *item)
    
     if(pilha->topo==NULL)
     {//Primeiro item
-        pilha->topo = item;
         item_set_anterior(item, NULL);
+        pilha->topo = item;
     }
     else
     {
         item_set_anterior(item, pilha->topo);
+        pilha->topo = item;
+
         if(item_get_distancia(item) == -1){
             return false;
         }
-        pilha->topo = item;
         pilha->dist_total += item_get_distancia(item);
     }
     return true;
@@ -110,14 +114,17 @@ void pilha_print(PILHA *pilha){
     if(pilha != NULL){
         int tam = pilha->tamanho;
         ITEM* aux = pilha->topo;
+        ITEM* prox = NULL;
         printf("Cidades: ");
         while(tam > 0){
             printf("%i ", item_get_chave(aux));
-            aux = item_get_anterior(aux);
+            prox = item_get_anterior(aux);
             tam--;
+            aux = prox;
         }
         printf("\n");
         printf("DISTANCIA: %.2f \n", pilha->dist_total);
+        printf("\n");
     }
 }
 
@@ -134,5 +141,19 @@ void pilha_set_distancia(PILHA* pilha, float distancia)
     if(pilha != NULL)
     {
         pilha->dist_total = distancia;
+    }
+}
+
+void pilha_set_topo(PILHA* pilha, ITEM* novo_topo)
+{
+    if(pilha != NULL && novo_topo != NULL)
+    {
+        pilha->topo = novo_topo;
+    }
+}
+
+int pilha_get_tamanho(PILHA* pilha){
+    if(pilha != NULL){
+        return pilha->tamanho;
     }
 }

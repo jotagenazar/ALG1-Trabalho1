@@ -9,7 +9,7 @@ struct item_{
     ITEM* anterior;
 };
 
-ITEM *item_criar(int cidade, int n_cidades)
+ITEM *item_criar(int cidade, int n_cidades, float** matriz_distancias)
 {
     ITEM* p = (ITEM*)malloc(sizeof(ITEM));
 
@@ -20,6 +20,10 @@ ITEM *item_criar(int cidade, int n_cidades)
     if(p->distancias == NULL)
     {
         return NULL;
+    }
+
+    for(int i = 0; i < n_cidades; i++){
+        p->distancias[i] = matriz_distancias[p->cidade - 1][i];
     }
 
     return p;
@@ -42,7 +46,10 @@ void item_imprimir(ITEM *item){
     if(item != NULL){
         printf("Cidade: %i \n", item->cidade);
     }
-    printf("O item nao existe.\n");
+    else
+    {
+        printf("O item nao existe.\n");
+    }
 }
 
 int item_get_chave(ITEM *item)
@@ -109,12 +116,12 @@ ITEM** vetor_criar(int n_cidades, int index_origem, float** matriz_distancias)
     {
         if(i != index_origem)
         {
-            vetor[j] = item_criar(i + 1, n_cidades);
+            vetor[j] = item_criar(i + 1, n_cidades, matriz_distancias);
             j++;
         }
     }
 
-    vetor_preencher(n_cidades, vetor, matriz_distancias);
+    //vetor_preencher(n_cidades, vetor, matriz_distancias);
     
     return vetor;
 }

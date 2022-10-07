@@ -6,6 +6,40 @@
 
 int qtd = 0;
 
+void heap_permutacao(PILHA* melhorPilha,PILHA* pilhaAtual, ITEM** vetor, int parte, int tam, ITEM* inicio)
+{
+    for (int i = 0; i < parte; i++) {
+        heap_permutacao(melhorPilha, vetor, parte - 1, tam, inicio);
+
+        if (parte % 2 == 1){
+            troca(vetor, 0, parte - 1);
+        }
+        else{
+            troca(vetor, i, parte-1);
+        }
+    }
+
+    if (parte == 1)
+    {
+        if(pilha_get_tamanho(pilhaAtual) == 0){
+            pilha_empilhar(pilhaAtual, inicio);
+
+            for(int i = tam - 1; i >= 0; i--){
+                if(!pilha_empilhar(pilhaAtual, vetor[i])){
+                    return
+                }
+            }
+        }
+
+        if(!pilha_empilhar(pilhaAtual, inicio)){
+            return;
+        }
+
+
+        return;
+    }
+}
+
 float** ler_matriz_distancias(int n_cidades)
 {
     float** matriz = (float**)malloc(n_cidades * sizeof(float*));
@@ -132,6 +166,10 @@ void heap_permutacao(PILHA** melhorPilha, ITEM** vetor, int parte, int tam, ITEM
 
             *melhorPilha = pilhaAtual;
 
+            //pilha_apagar(&pilhaAtual);
+        }
+        else
+        {
             pilha_apagar(&pilhaAtual);
         }
 

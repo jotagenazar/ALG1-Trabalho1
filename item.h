@@ -5,7 +5,7 @@
 
 	typedef struct item_ ITEM;
 
-	ITEM *item_criar(int cidade, int n_cidades);
+	ITEM *item_criar(int cidade, int n_cidades, float** matriz_distancias);
 	bool item_apagar(ITEM **item);
 	void item_imprimir(ITEM *item);
 	int item_get_chave(ITEM *item);
