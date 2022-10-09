@@ -16,5 +16,8 @@ main.o: main.c
 clean:
 	rm *.o pcv
 
+valgrind:
+	valgrind ./pcv
+
 run:
 	./pcv
