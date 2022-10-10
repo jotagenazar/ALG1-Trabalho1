@@ -1,23 +1,29 @@
-﻿all: item.o Pilha.o main.o pcv.o
-	gcc item.o Pilha.o main.o pcv.o -o pcv -std=c99 -Wall
+﻿CC = gcc
+FLAGS = -g -Wall -Werror -std=c99
 
-pcv.o: pcv.c pcv.h
-	gcc -c pcv.c -o pcv.o
+OBJS = main.o pcv.o lista.o cidade.o
+BIN = pcv
 
-item.o: item.c item.h
-	gcc -c item.c -o item.o
+all: $(OBJS)
+	$(CC) $(FLAGS) $(OBJS) -o $(BIN)
 
-Pilha.o: Pilha.c Pilha.h
-	gcc -c Pilha.c -o Pilha.o
-	 
 main.o: main.c 
-	gcc -c main.c -o main.o
+	$(CC) $(FLAGS) -c main.c
+
+pcv.o: src/pcv.c Includes/pcv.h
+	$(CC) $(FLAGS) -c src/pcv.c
+
+lista.o: src/lista.c Includes/lista.h
+	$(CC) $(FLAGS) -c src/lista.c
+
+cidade.o: src/cidade.c Includes/cidade.h
+	$(CC) $(FLAGS) -c src/cidade.c
 	 
 clean:
-	rm *.o pcv
-
-valgrind:
-	valgrind ./pcv
+	rm *.o $(BIN)
 
 run:
-	./pcv
+	./$(BIN)
+
+valgrind:
+	valgrind ./$(BIN)
