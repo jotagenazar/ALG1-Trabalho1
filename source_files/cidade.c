@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "../Includes/cidade.h"
+#include "../headers/cidade.h"
 
 struct cidade
 {
