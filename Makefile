@@ -11,13 +11,13 @@ main.o: main.c
 	$(CC) $(FLAGS) -c main.c
 
 pcv.o: src/pcv.c Includes/pcv.h
-	$(CC) $(FLAGS) -c src/pcv.c
+	$(CC) $(FLAGS) -c source_files/pcv.c
 
-lista.o: src/lista.c Includes/lista.h
-	$(CC) $(FLAGS) -c src/lista.c
+lista.o: src/lista.c headers/lista.h
+	$(CC) $(FLAGS) -c source_files/lista.c
 
-cidade.o: src/cidade.c Includes/cidade.h
-	$(CC) $(FLAGS) -c src/cidade.c
+cidade.o: src/cidade.c headers/cidade.h
+	$(CC) $(FLAGS) -c source_files/cidade.c
 	 
 clean:
 	rm *.o $(BIN)
