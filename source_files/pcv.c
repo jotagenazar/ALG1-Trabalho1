@@ -110,10 +110,11 @@ void heap_permutacao(list_t** melhorLista, cidade_t** cidadesDestino, cidade_t* 
         }
     }
 }
+                                //cidades a serem visitadas  //cidade de origem    //quantidade de cidades
+list_t* calcular_melhor_trajeto(cidade_t** cidadesDestino, cidade_t* cidadeOrigem, int n_cidades) { //função que calcula o melhor trajeto com base na distancia por meio de permutacao
+    list_t* melhorLista = lista_criar();    //alocação da lista onde será guardado o melhor caminho
 
-list_t* calcular_melhor_trajeto(cidade_t** cidadesDestino, cidade_t* cidadeOrigem, int n_cidades) {
-    list_t* melhorLista = lista_criar();
-
+    //permutacao do array de cidades a serem visitadas, será armazenada na lista melhorLista
     heap_permutacao(&melhorLista, cidadesDestino, cidadeOrigem, n_cidades - 1, n_cidades - 1);
 
     return melhorLista;
