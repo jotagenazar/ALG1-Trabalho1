@@ -3,20 +3,19 @@
 
 #include "../headers/pcv.h"
 
-float** ler_matriz_distancias(int n_cidades)
-{
-    float** matriz = (float**)malloc(n_cidades * sizeof(float*));
+//os indices da matriz de distancia correspondem ao id - 1 de cada cidade 
 
+float** ler_matriz_distancias(int n_cidades) { //função que aloca e lê a matriz de distancias entre as cidades inserida pelo usuário com base no numero de cidades passado
+    //alocação das linhas da matriz
+    float** matriz = (float**)malloc(n_cidades * sizeof(float*));
     if(matriz == NULL) return NULL;
 
-    for(int i = 0; i < n_cidades; ++i)
-    {
+    for(int i = 0; i < n_cidades; ++i) { //alocacão de cada coluna referente às linhas criadas da matriz
         matriz[i] = (float*)malloc(n_cidades * sizeof(float));
 
-        if(matriz[i] == NULL)
-        {
-            for(int j = 0; j < i; ++j)
-            {
+        //caso a alocação falhe
+        if(matriz[i] == NULL) {
+            for(int j = 0; j < i; ++j) {
                 free(matriz[i]);
             }
 
@@ -26,50 +25,44 @@ float** ler_matriz_distancias(int n_cidades)
         }
     }
 
-    int a, b;
-    float distancia;
-
-    for(int i = 0; i < n_cidades; i++)
-    {
-        for(int j = 0; j < n_cidades; j++)
-        {
+    //preenchimento inicial da matriz para limpeza
+    for(int i = 0; i < n_cidades; i++) {
+        for(int j = 0; j < n_cidades; j++) {
             matriz[i][j] = -1;
         }
     }
 
-   //Preenchendo a matriz
-   while(scanf("%i %i %f", &a, &b, &distancia) != EOF)
-   {
-        matriz[a-1][b-1] = distancia;
-        matriz[b-1][a-1] = distancia;
-   }
-
-    return matriz;
-}
-
-void matriz_apagar(float*** matriz_distancias, int n_cidades)
-{
-    if(matriz_distancias == NULL || *matriz_distancias == NULL) return;
-
-    for(int i = 0; i < n_cidades; ++i)
-    {
-        free((*matriz_distancias)[i]);
+    //leitura das distancias e preenchimento real da matriz
+    int a, b;
+    float distancia;
+    while(scanf("%i %i %f", &a, &b, &distancia) != EOF) { //leitura de cada linha até o fim da entrada
+        matriz[a-1][b-1] = distancia; //preenche a posicao referente à linha em 'a' e coluna em 'b'    
+        matriz[b-1][a-1] = distancia; //preenche a posicao referente à linha em 'b' e coluna em 'a'    
     }
 
+    return matriz; //retorno da matriz alocada
+}
+
+void matriz_apagar(float*** matriz_distancias, int n_cidades) { //procedimento que apaga a matriz de distancias passada
+    if(matriz_distancias == NULL || *matriz_distancias == NULL) return; //se o ponteiro é nulo, não há o que desalocar
+
+    //para cada linha da matriz, sua coluna é desalocada
+    for(int i = 0; i < n_cidades; ++i) {
+        free((*matriz_distancias)[i]);
+    }
+    //desalocação do array de linhas da matriz
     free(*matriz_distancias);
 
     *matriz_distancias = NULL;
 }
 
-void troca(cidade_t** a, int i, int j)
-{
+void troca(cidade_t** a, int i, int j) { //procedimento que troca duas cidades num array de cidades com base nos seus indices
   cidade_t* temp = a[i];
   a[i] = a[j];
   a[j] = temp;
 }
 
-void heap_permutacao(list_t** melhorLista, cidade_t** cidadesDestino, cidade_t* cidadeOrigem, int parte, int tam)
-{
+void heap_permutacao(list_t** melhorLista, cidade_t** cidadesDestino, cidade_t* cidadeOrigem, int parte, int tam) {
     for (int i = 0; i < parte; i++) {
         heap_permutacao(melhorLista, cidadesDestino, cidadeOrigem, parte - 1, tam);
 
@@ -81,58 +74,44 @@ void heap_permutacao(list_t** melhorLista, cidade_t** cidadesDestino, cidade_t* 
         }
     }
 
-    if (parte == 1)
-    {
+    if (parte == 1) {
         list_t* listaAtual = lista_criar();
 
         lista_inserir(listaAtual, cidadeOrigem);
 
-        for(int i = 0; i < tam; i++)
-        {
-            if(!lista_inserir(listaAtual, cidadesDestino[i])) 
-            {
+        for(int i = 0; i < tam; i++) {
+            if(!lista_inserir(listaAtual, cidadesDestino[i])) {
                 lista_apagar(&listaAtual);
                 return;
             }
         }
 
-        if(!lista_inserir(listaAtual, cidadeOrigem)) 
-        {
+        if(!lista_inserir(listaAtual, cidadeOrigem)) {
             lista_apagar(&listaAtual);
             return;
         }
 
         float distanciaAtual = lista_get_distancia(listaAtual);
         float melhorDistancia = lista_get_distancia(*melhorLista);
-
-        if(melhorDistancia == 0 || distanciaAtual < melhorDistancia)
-        {
+        if(melhorDistancia == 0 || distanciaAtual < melhorDistancia) {
             lista_apagar(melhorLista);
 
             *melhorLista = listaAtual;
-        }
-        else if(distanciaAtual == melhorDistancia)
-        {
-            if(cidade_get_cidade_id(cidadesDestino[1]) < cidade_get_cidade_id(list_get_primeiro_destino(*melhorLista)))
-            {
+        } else if(distanciaAtual == melhorDistancia) {
+            if(cidade_get_cidade_id(cidadesDestino[1]) < cidade_get_cidade_id(list_get_primeiro_destino(*melhorLista))) {
                 lista_apagar(melhorLista);
 
                 *melhorLista = listaAtual;               
-            }
-            else
-            {
+            } else {
                 lista_apagar(&listaAtual);
             }
-        }
-        else
-        {
+        } else {
             lista_apagar(&listaAtual);
         }
     }
 }
 
-list_t* calcular_melhor_trajeto(cidade_t** cidadesDestino, cidade_t* cidadeOrigem, int n_cidades)
-{
+list_t* calcular_melhor_trajeto(cidade_t** cidadesDestino, cidade_t* cidadeOrigem, int n_cidades) {
     list_t* melhorLista = lista_criar();
 
     heap_permutacao(&melhorLista, cidadesDestino, cidadeOrigem, n_cidades - 1, n_cidades - 1);
