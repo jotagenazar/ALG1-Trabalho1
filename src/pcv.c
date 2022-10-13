@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "../headers/pcv.h"
+#include "../includes/pcv.h"
 
 //os indices da matriz de distancia correspondem ao id - 1 de cada cidade 
 

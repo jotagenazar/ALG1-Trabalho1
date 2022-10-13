@@ -10,14 +10,14 @@ all: $(OBJS)
 main.o: main.c 
 	$(CC) $(FLAGS) -c main.c
 
-pcv.o: src/pcv.c Includes/pcv.h
-	$(CC) $(FLAGS) -c source_files/pcv.c
+pcv.o: src/pcv.c includes/pcv.h
+	$(CC) $(FLAGS) -c src/pcv.c
 
-lista.o: src/lista.c headers/lista.h
-	$(CC) $(FLAGS) -c source_files/lista.c
+lista.o: src/lista.c includes/lista.h
+	$(CC) $(FLAGS) -c src/lista.c
 
-cidade.o: src/cidade.c headers/cidade.h
-	$(CC) $(FLAGS) -c source_files/cidade.c
+cidade.o: src/cidade.c includes/cidade.h
+	$(CC) $(FLAGS) -c src/cidade.c
 	 
 clean:
 	rm *.o $(BIN)

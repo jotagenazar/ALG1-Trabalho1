@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "headers/pcv.h"
+#include "includes/pcv.h"
 
 int main() {
    int quantidadeCidades, origem; //variaveis que armazenam a quantidade de cidades e o id da cidade de origem

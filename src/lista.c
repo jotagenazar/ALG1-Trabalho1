@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <assert.h>
 
-#include "../headers/lista.h"
+#include "../includes/lista.h"
 
 typedef struct node node_t;
 
