@@ -63,25 +63,27 @@ void troca(cidade_t** a, int i, int j) { //procedimento que troca duas cidades n
 }
 
                                                                                                                     
-void heap_permutacao(list_t** melhorLista, cidade_t** cidadesDestino, cidade_t* cidadeOrigem, int parte, int tam) {
+void heap_permutacao(list_t** melhorLista, cidade_t** cidadesDestino, cidade_t* cidadeOrigem, int k, int tam) {
                                                                                             //elemento até o qual a permutacao ocorrera
                                                                                                         //tamanho total do array permutado
-    for (int i = 0; i < parte; i++) { 
-        heap_permutacao(melhorLista, cidadesDestino, cidadeOrigem, parte - 1, tam);
+    for (int i = 0; i < k; i++) { //laco para calcular cada permutacao
+        heap_permutacao(melhorLista, cidadesDestino, cidadeOrigem, k - 1, tam);
 
-        if (parte % 2 == 1){
-            troca(cidadesDestino, 0, parte - 1);
+
+        if (k % 2 == 1){
+            troca(cidadesDestino, 0, k - 1);
         }
         else{
-            troca(cidadesDestino, i, parte-1);
+            troca(cidadesDestino, i, k-1);
         }
     }
 
-    if (parte == 1) {
+    if (k == 1) { //condicao de parada da recursao, terminada uma permutacao
+        //criacao da lista e insercao da cidade de origem
         list_t* listaAtual = lista_criar();
-
         lista_inserir(listaAtual, cidadeOrigem);
 
+        //insercao da permutacao na lista
         for(int i = 0; i < tam; i++) {
             if(!lista_inserir(listaAtual, cidadesDestino[i])) {
                 lista_apagar(&listaAtual);
@@ -89,26 +91,27 @@ void heap_permutacao(list_t** melhorLista, cidade_t** cidadesDestino, cidade_t* 
             }
         }
 
+        //insercao do fim do trajeto, retorno à cidade de origem
         if(!lista_inserir(listaAtual, cidadeOrigem)) {
             lista_apagar(&listaAtual);
             return;
         }
 
+        //calculo da distancia, avalia se a permutacao calculada possui distancia menor que a do melhor trajeto
         float distanciaAtual = lista_get_distancia(listaAtual);
         float melhorDistancia = lista_get_distancia(*melhorLista);
-        if(melhorDistancia == 0 || distanciaAtual < melhorDistancia) {
-            lista_apagar(melhorLista);
 
+        if(melhorDistancia == 0 || distanciaAtual < melhorDistancia) { //caso a permutacao seja melhor
+            lista_apagar(melhorLista);
             *melhorLista = listaAtual;
-        } else if(distanciaAtual == melhorDistancia) {
+        } else if(distanciaAtual == melhorDistancia) { //se as distancias forem iguais, a lista crescente é a escolhida
             if(cidade_get_cidade_id(cidadesDestino[1]) < cidade_get_cidade_id(list_get_primeiro_destino(*melhorLista))) {
                 lista_apagar(melhorLista);
-
                 *melhorLista = listaAtual;               
             } else {
                 lista_apagar(&listaAtual);
             }
-        } else {
+        } else { //caso a melhor lista passada seja melhor que a permutacao atual
             lista_apagar(&listaAtual);
         }
     }
@@ -119,6 +122,6 @@ list_t* calcular_melhor_trajeto(cidade_t** cidadesDestino, cidade_t* cidadeOrige
 
     //permutacao do array de cidades a serem visitadas, será armazenada na lista melhorLista
     heap_permutacao(&melhorLista, cidadesDestino, cidadeOrigem, n_cidades - 1, n_cidades - 1);
-                                                                //parte permutada  //tamanho total
+                                                                //k permutada  //tamanho total
     return melhorLista;
 }
