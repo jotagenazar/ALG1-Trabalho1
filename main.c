@@ -31,13 +31,8 @@ int main() {
    //criação da lista que armazena o melhor trajeto e calculo dele
    list_t* melhorTrajeto = calcular_melhor_trajeto(cidadesDestino, cidadeOrigem, quantidadeCidades);
 
-   //criacao da variavel que armazena a distancia total da lista de melhor trajeto
-   float melhorDistancia = lista_get_distancia(melhorTrajeto);
-
    //impressão do melhor trajeto e da sua distancia
-   printf("Melhor trajeto: ");
    lista_imprimir(melhorTrajeto);
-   printf("Melhor distância: %.2f\n", melhorDistancia);
 
    //desalocações e finalização do programa
    matriz_apagar(&matriz_distancias, quantidadeCidades);
