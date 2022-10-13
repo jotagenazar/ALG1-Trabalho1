@@ -1,7 +1,16 @@
+/*
+
+Alunos: Henrique S. Marques (11815722), Lucas Greff Meneses (13671615), João Gabriel Manfré Nazar (13733652)
+Trabalho 1 - PCV
+Professor: Marcelo Manzato
+
+*/
+
+
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "includes/pcv.h"
+#include "Includes/pcv.h"
 
 int main() {
    int quantidadeCidades, origem; //variaveis que armazenam a quantidade de cidades e o id da cidade de origem

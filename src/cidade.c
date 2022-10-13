@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "../includes/cidade.h"
+#include "../Includes/cidade.h"
 
 cidade_t *cidade_criar(int cidade, int n_cidades, float** matriz_distancias) { //função que aloca e preenche uma cidade e seu vetor de distâncias, retorna o endereço da cidade
     cidade_t* p = (cidade_t*)malloc(sizeof(cidade_t)); //alocação da cidade a ser retornada

@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "../includes/pcv.h"
+#include "../Includes/pcv.h"
 
 //os indices da matriz de distancia correspondem ao id - 1 de cada cidade 
 
@@ -62,8 +62,11 @@ void troca(cidade_t** a, int i, int j) { //procedimento que troca duas cidades n
   a[j] = temp;
 }
 
+                                                                                                                    
 void heap_permutacao(list_t** melhorLista, cidade_t** cidadesDestino, cidade_t* cidadeOrigem, int parte, int tam) {
-    for (int i = 0; i < parte; i++) {
+                                                                                            //elemento até o qual a permutacao ocorrera
+                                                                                                        //tamanho total do array permutado
+    for (int i = 0; i < parte; i++) { 
         heap_permutacao(melhorLista, cidadesDestino, cidadeOrigem, parte - 1, tam);
 
         if (parte % 2 == 1){
@@ -116,6 +119,6 @@ list_t* calcular_melhor_trajeto(cidade_t** cidadesDestino, cidade_t* cidadeOrige
 
     //permutacao do array de cidades a serem visitadas, será armazenada na lista melhorLista
     heap_permutacao(&melhorLista, cidadesDestino, cidadeOrigem, n_cidades - 1, n_cidades - 1);
-
+                                                                //parte permutada  //tamanho total
     return melhorLista;
 }
