@@ -105,7 +105,7 @@ void heap_permutacao(list_t** melhorLista, cidade_t** cidadesDestino, cidade_t* 
             lista_apagar(melhorLista);
             *melhorLista = listaAtual;
         } else if(distanciaAtual == melhorDistancia) { //se as distancias forem iguais, a lista crescente é a escolhida
-            if(cidade_get_cidade_id(cidadesDestino[1]) < cidade_get_cidade_id(list_get_primeiro_destino(*melhorLista))) {
+            if(cidade_get_cidade_id(cidadesDestino[0]) < cidade_get_cidade_id(list_get_primeiro_destino(*melhorLista))) {
                 lista_apagar(melhorLista);
                 *melhorLista = listaAtual;               
             } else {
