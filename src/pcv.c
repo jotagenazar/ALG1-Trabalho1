@@ -78,42 +78,78 @@ void heap_permutacao(list_t** melhorLista, cidade_t** cidadesDestino, cidade_t* 
         }
     }
 
-    if (k == 1) { //condicao de parada da recursao, terminada uma permutacao
+    if (k == 1) //condicao de parada da recursao, terminada uma permutacao 
+    {
         //criacao da lista e insercao da cidade de origem
         list_t* listaAtual = lista_criar();
         lista_inserir(listaAtual, cidadeOrigem);
 
+        float melhorDistancia = lista_get_distancia(*melhorLista); 
+        float distanciaAtual;
+
         //insercao da permutacao na lista
-        for(int i = 0; i < tam; i++) {
-            if(!lista_inserir(listaAtual, cidadesDestino[i])) {
+        for(int i = 0; i < tam; i++)
+        {
+            if(lista_inserir(listaAtual, cidadesDestino[i])) 
+            {
+                distanciaAtual = lista_get_distancia(listaAtual);
+                // Caso a distância atual seja maior que a melhorDistancia, passamos para a próxima recursão
+                if((distanciaAtual > melhorDistancia) && (melhorDistancia != 0))
+                {
+                    lista_apagar(&listaAtual);
+                    return;
+                }
+            }
+            else 
+            {
                 lista_apagar(&listaAtual);
                 return;
             }
         }
 
         //insercao do fim do trajeto, retorno à cidade de origem
-        if(!lista_inserir(listaAtual, cidadeOrigem)) {
+        if(lista_inserir(listaAtual, cidadeOrigem)) 
+        {
+            distanciaAtual = lista_get_distancia(listaAtual);
+            // Caso a distância atual seja maior que a melhorDistancia, passamos para a próxima recursão
+            if((distanciaAtual > melhorDistancia) && (melhorDistancia != 0))
+            {
+                lista_apagar(&listaAtual);
+                return;
+            }
+        }
+        else
+        {
             lista_apagar(&listaAtual);
             return;
         }
 
-        //calculo da distancia, avalia se a permutacao calculada possui distancia menor que a do melhor trajeto
-        float distanciaAtual = lista_get_distancia(listaAtual);
-        float melhorDistancia = lista_get_distancia(*melhorLista);
-
-        if(melhorDistancia == 0 || distanciaAtual < melhorDistancia) { //caso a permutacao seja melhor
+        if(melhorDistancia == 0)
+        {
             lista_apagar(melhorLista);
-            *melhorLista = listaAtual;
-        } else if(distanciaAtual == melhorDistancia) { //se as distancias forem iguais, a lista crescente é a escolhida
-            if(cidade_get_cidade_id(cidadesDestino[0]) < cidade_get_cidade_id(list_get_primeiro_destino(*melhorLista))) {
-                lista_apagar(melhorLista);
-                *melhorLista = listaAtual;               
-            } else {
-                lista_apagar(&listaAtual);
-            }
-        } else { //caso a melhor lista passada seja melhor que a permutacao atual
-            lista_apagar(&listaAtual);
+            *melhorLista = listaAtual; 
+
+            return;           
         }
+        // Se as distancias forem iguais, a lista crescente é a escolhida
+        if(distanciaAtual == melhorDistancia) 
+        {
+            if(cidade_get_cidade_id(cidadesDestino[0]) < cidade_get_cidade_id(cidadesDestino[tam - 1]))
+            {
+                lista_apagar(melhorLista);
+                *melhorLista = listaAtual; 
+                return;              
+            } 
+            else 
+            {
+                lista_apagar(&listaAtual);
+                return;
+            }
+        }
+
+        // Caso nenhum dos casos acima tenham sido atingidos, trocamos a melhor lista pela atual
+        lista_apagar(melhorLista);
+        *melhorLista = listaAtual;
     }
 }
                                 //cidades a serem visitadas  //cidade de origem    //quantidade de cidades
