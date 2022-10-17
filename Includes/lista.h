@@ -13,7 +13,6 @@
     bool lista_inserir(list_t* list, cidade_t* x); //função que cria um novo nó com a cidade passada e o insere na ultima posição. se o caminho criado é possível, retorna verdadeiro; se impossível, retorna falso
     
     float lista_get_distancia(list_t* list); //funcao que retorna a distancia total entre as cidades armazenadas na lista passada
-    cidade_t* list_get_primeiro_destino(list_t* list); //função que retorna a cidade no primeiro nó da lista
     
     void lista_imprimir(list_t* list); //procedimento que imprime cada cidade da lista passada como parametro
 
